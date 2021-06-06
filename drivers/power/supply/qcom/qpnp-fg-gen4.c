@@ -4495,7 +4495,6 @@ static int fg_psy_set_property(struct power_supply *psy,
 
 	switch (psp) {
 	case POWER_SUPPLY_PROP_CHARGE_FULL:
-/*
 		if (chip->cl->active) {
 			pr_warn("Capacity learning active!\n");
 			return 0;
@@ -4504,7 +4503,6 @@ static int fg_psy_set_property(struct power_supply *psy,
 			pr_err("charge_full is out of bounds\n");
 			return -EINVAL;
 		}
-*/
 		mutex_lock(&chip->cl->lock);
 		rc = fg_gen4_store_learned_capacity(chip, pval->intval);
 		if (!rc)
@@ -4681,7 +4679,7 @@ static int fg_awake_cb(struct votable *votable, void *data, int awake,
 	struct fg_dev *fg = data;
 
 	if (awake)
-		pm_wakeup_event(fg->dev, 500);
+		pm_stay_awake(fg->dev);
 	else
 		pm_relax(fg->dev);
 
